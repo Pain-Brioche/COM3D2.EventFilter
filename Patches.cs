@@ -47,7 +47,7 @@ namespace COM3D2.EventFilter
  */
 
 
-        [HarmonyPrefix]
+        [HarmonyPostfix]
         [HarmonyPatch(typeof(SceneScenarioSelect), "OnSelectScenario")]
         private static void DisplayID()
         {

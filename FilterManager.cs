@@ -39,21 +39,55 @@ namespace COM3D2.EventFilter
             foreach (ScenarioManager.Scenario scn in ScnList)
             {
                 //if an event IsFiltered, it will be hidden
-                bool isHidden  = false;
+                bool isHidden = false;
+
+                //Custom Filter overrides every other type of filter except filter by custom
+                if (isFilterCustom)
+                    isHidden = scn.IsCustom;
+
+               if (isFilterSpecial && !isHidden)
+                   isHidden = scn.IsSpecial;
+
+               if (isFilterNPC && !isHidden)
+                   isHidden = scn.IsNPC;
+
+               if (!searchString.IsNullOrWhiteSpace() && !isHidden)
+                   isHidden = !scn.TextBlob.Contains(searchString.ToLower());
+
+               if(personality > 0 && !isHidden)
+               {
+                    switch (personalityID)
+                    {
+                        case 999:
+                            isHidden = (scn.MaidIDs.Length > 0 && !scn.IsNPC);
+                            EventFilter.Logger.LogMessage("999");
+                            break;
+
+                        case 1000:
+                            isHidden = !scn.IsCustom;
+                            EventFilter.Logger.LogMessage("1000");
+                            break;
+
+                        case > 0:
+                            isHidden = !scn.MaidIDs.Contains(personalityID);
+
+                            //special case as all NPCs are considered Mukus
+                            if (personalityID == 80 && scn.IsNPC)
+                                isHidden = true;
+
+                            EventFilter.Logger.LogMessage(personalityID);
+                            break;
+
+                        default:
+                            isHidden = false;
+                            EventFilter.Logger.LogMessage("Default");
+                            break;
+                    }
+               }
 
 
-                //Custom Filter overrides every other type of filter
-                if (scn.IsCustom && isFilterCustom)
-                {
-                    isHidden = true;
-                }
-                else
-                {
-                    if (isFilterSpecial && !isHidden)
-                        isHidden = scn.IsSpecial;
 
-                    if (isFilterNPC && !isHidden)
-                        isHidden = scn.IsNPC;
+                    /*
 
                     if (personality != 0 && !isHidden)
                     {
@@ -64,15 +98,16 @@ namespace COM3D2.EventFilter
                             isHidden = true;
                     }
 
-                    if (!searchString.IsNullOrWhiteSpace() && !isHidden)
-                        isHidden = !scn.TextBlob.Contains(searchString.ToLower());
+
+
+                    if (personality == 1000)
+                        isHidden = !scn.IsCustom;
 
                     //In the offchance someone wants only NPC and Special events displayed
-                    if (personalityID == 999)
-                    {
+                    else if (personality == 999)
                         isHidden = (scn.MaidIDs.Length > 0 && !scn.IsNPC);
-                    }
-                }
+                    */
+                
 
                 #region logging
                 //logging things, to be deleted
@@ -97,49 +132,7 @@ namespace COM3D2.EventFilter
             }
 
             //Hide disabled Events from the list and refresh it
-            ScenarioManager.sceneScenarioSelect.m_ScenarioScroll.Grid.hideInactive = true;
             ScenarioManager.sceneScenarioSelect.m_ScenarioScroll.Grid.Reposition();
-
-            /*
-            // retrieve the SceneScenarioSelect object.
-            if (sceneScenarioSelect == null)
-                sceneScenarioSelect = (SceneScenarioSelect)FindObjectOfType(typeof(SceneScenarioSelect));
-
-
-            foreach (KeyValuePair <UIWFTabButton, ScenarioData> scn in sceneScenarioSelect.m_ScenarioButtonpair)
-            {
-                if (scn.Value  == null || scn.Key == null)
-                {
-                    EventFilter.Logger.LogWarning($"{scn.Value.Title} UIFTabButton/ScenarioData returned NULL");
-                    continue;
-                }
-
-                #region logging
-                //logging things, to be deleted
-                EventFilter.Logger.LogInfo("-----------------------------------------");
-                string ml = $"{scn.Value.Title} - {scn.Value.m_EventMaid.Count} Maids: ";
-
-                foreach (Maid maid in scn.Value.m_EventMaid)
-                {
-                    int id = maid.status.personal.id;
-                    string pers = MaidStatus.Personal.IdToUniqueName(id);
-                    string tempStr = $"{id}=>{pers} | ";
-                    ml = $"{ml}{tempStr}";
-                }
-                EventFilter.Logger.LogInfo(ml);
-                #endregion
-
-                //Filter out elements from the list
-                if (!scn.Value.m_EventMaid.Select(m => m.status.personal.id).Contains(personalityID))
-                    scn.Key.transform.parent.gameObject.SetActive(false);
-                else
-                    scn.Key.transform.parent.gameObject.SetActive(true);
-            }
-
-            //Hide disabled Events from the list and refresh it
-            sceneScenarioSelect.m_ScenarioScroll.Grid.hideInactive = true;
-            sceneScenarioSelect.m_ScenarioScroll.Grid.Reposition();
-            */
         }
 
         public static void ResetList()
@@ -165,7 +158,7 @@ namespace COM3D2.EventFilter
             }
             catch (FormatException)
             {
-                EventFilter.Logger.LogWarning($"{idString} is not valid!");
+                EventFilter.Logger.LogWarning($"{idString} is not a valid Event ID!");
                 EventFilter.Instance.EventFilterPluginPanel.customField.Text = "";
                 return;
             }
@@ -185,7 +178,6 @@ namespace COM3D2.EventFilter
             //Immediatly hide the event
             Scn.ButtonObject.SetActive(false);
 
-            ScenarioManager.sceneScenarioSelect.m_ScenarioScroll.Grid.hideInactive = true;
             ScenarioManager.sceneScenarioSelect.m_ScenarioScroll.Grid.Reposition();
 
             EventFilter.SaveJson();

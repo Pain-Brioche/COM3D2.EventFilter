@@ -28,6 +28,9 @@ namespace COM3D2.EventFilter
                 Scenario scenario = new(scn);
                 Scenarios.Add(scenario);
             }
+
+            sceneScenarioSelect.m_ScenarioScroll.Grid.hideInactive = true;
+            //sceneScenarioSelect.m_ScenarioScroll.Grid.Reposition();
         }
 
         public class Scenario
@@ -74,6 +77,10 @@ namespace COM3D2.EventFilter
 
                 //CustomID list is recovered between sessions from a .json
                 IsCustom = EventFilter.Instance.CustomFilterIDS.Contains(scn.Value.ID);
+                if (IsCustom )
+                {
+                    ButtonObject.SetActive(false);
+                }
 
                 //building text blob, a concatenation of all relevant text to search into
                 TextBlob = $"{Title} {ScenarioScript}";

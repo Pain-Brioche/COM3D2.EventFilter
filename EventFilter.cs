@@ -13,7 +13,7 @@ using Newtonsoft.Json;
 
 namespace COM3D2.EventFilter
 {
-    [BepInPlugin("COM3D2.EventFilter", "Event Filter", "0.1")]
+    [BepInPlugin("COM3D2.EventFilter", "Event Filter", "1.0")]
     public partial class EventFilter : BaseUnityPlugin
     {
         //Main Instance

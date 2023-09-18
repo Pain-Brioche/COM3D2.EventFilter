@@ -58,7 +58,8 @@ namespace COM3D2.EventFilter
             {200 , "Haraguro"},
             {210 , "Kisakude"},
             {220 , "Kimajime"},
-            {999 , "NPC & Special Only"}
+            {999 , "NPC & Special Only"},
+            {1000, "Custom Filter Only" }
         };
 
         internal static string[] GetPersonalityArray()
