@@ -69,6 +69,10 @@ namespace COM3D2.EventFilter
         private static void InitScenarioManager()
         {
             FilterManager.ScenarioManager ??= new ScenarioManager();
+
+            //apply/reapply the filter upon loading the Event scene.
+            PluginPanel pp = EventFilter.Instance.EventFilterPluginPanel;
+            FilterManager.FilterList(pp.selectedPersonality, pp.isFilterSpecial, pp.isFilterNPC, pp.isFilterCustom, pp.searchText);
         }
     }
 }

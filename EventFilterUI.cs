@@ -90,10 +90,12 @@ namespace COM3D2.EventFilter
 
 
         //values
-        bool isFilterSpecial = false;
-        bool isFilterNPC = false;
-        bool isFilterCustom = true;
-        internal UniverseLib.UI.Models.InputFieldModel customField;
+        public int selectedPersonality = 0;
+        public string searchText = string.Empty;
+        public bool isFilterSpecial = false;
+        public bool isFilterNPC = false;
+        public bool isFilterCustom = true;
+        public UniverseLib.UI.Models.InputFieldModel customField;
 
         protected override void OnClosePanelClicked()
         {
@@ -106,7 +108,7 @@ namespace COM3D2.EventFilter
             using (Create.LayoutContext(flexibleWidth: 1))
             {
                 //Default layout is a vertical stack, each new element will be placed bellow.
-                var personalityDropdown = Create.Dropdown(ContentRoot, "Personality", null, 0, Personalities.GetPersonalityArray());
+                var personalityDropdown = Create.Dropdown(ContentRoot, "Personality", null, selectedPersonality, Personalities.GetPersonalityArray());
                 var searchField = Create.InputField(ContentRoot, "Search", "Search...");
 
                 Create.BoolControl(ContentRoot, "FilterEvents", "Remove Special Events", refGet: () => ref isFilterSpecial);
@@ -134,7 +136,9 @@ namespace COM3D2.EventFilter
 
                 filterButton.OnClick += delegate ()
                 {
-                    FilterManager.FilterList(personalityDropdown.Value, isFilterSpecial, isFilterNPC, isFilterCustom, searchField.Text);
+                    selectedPersonality = personalityDropdown.Value;
+                    searchText = searchField.Text;
+                    FilterManager.FilterList(selectedPersonality, isFilterSpecial, isFilterNPC, isFilterCustom, searchText);
                 };
 
                 //Reset all Filters Button

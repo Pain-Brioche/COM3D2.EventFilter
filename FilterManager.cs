@@ -60,12 +60,10 @@ namespace COM3D2.EventFilter
                     {
                         case 999:
                             isHidden = (scn.MaidIDs.Length > 0 && !scn.IsNPC);
-                            EventFilter.Logger.LogMessage("999");
                             break;
 
                         case 1000:
                             isHidden = !scn.IsCustom;
-                            EventFilter.Logger.LogMessage("1000");
                             break;
 
                         case > 0:
@@ -75,39 +73,14 @@ namespace COM3D2.EventFilter
                             if (personalityID == 80 && scn.IsNPC)
                                 isHidden = true;
 
-                            EventFilter.Logger.LogMessage(personalityID);
                             break;
 
                         default:
                             isHidden = false;
-                            EventFilter.Logger.LogMessage("Default");
                             break;
                     }
                }
-
-
-
-                    /*
-
-                    if (personality != 0 && !isHidden)
-                    {
-                        isHidden = !scn.MaidIDs.Contains(personalityID);
-
-                        //special case as all NPCs are considered Mukus
-                        if (personalityID == 80 && scn.IsNPC)
-                            isHidden = true;
-                    }
-
-
-
-                    if (personality == 1000)
-                        isHidden = !scn.IsCustom;
-
-                    //In the offchance someone wants only NPC and Special events displayed
-                    else if (personality == 999)
-                        isHidden = (scn.MaidIDs.Length > 0 && !scn.IsNPC);
-                    */
-                
+               
 
                 #region logging
                 //logging things, to be deleted
