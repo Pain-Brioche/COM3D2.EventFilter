@@ -13,7 +13,7 @@ namespace COM3D2.EventFilter
     {
         public static ScenarioManager ScenarioManager { get; set; }
 
-        public static void FilterList(int personality, bool isFilterSpecial, bool isFilterNPC, bool isFilterCustom, string searchString = null)
+        public static void FilterList(int personality, bool isFilterSpecial, bool isFilterNPC, bool isFilterCustom, bool isFilterNTR, string searchString = null)
         {
             List<ScenarioManager.Scenario>  ScnList = ScenarioManager.Scenarios;
             int personalityID = 0;
@@ -50,6 +50,9 @@ namespace COM3D2.EventFilter
 
                if (isFilterNPC && !isHidden)
                    isHidden = scn.IsNPC;
+
+               if (isFilterNTR && !isHidden)
+                   isHidden = scn.IsNTR;
 
                if (!searchString.IsNullOrWhiteSpace() && !isHidden)
                    isHidden = !scn.TextBlob.Contains(searchString.ToLower());

@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace COM3D2.EventFilter
 {
-    internal class Patches
+    internal static class Patches
     {
         /*
  [HarmonyPostfix]
@@ -72,7 +72,7 @@ namespace COM3D2.EventFilter
 
             //apply/reapply the filter upon loading the Event scene.
             PluginPanel pp = EventFilter.Instance.EventFilterPluginPanel;
-            FilterManager.FilterList(pp.selectedPersonality, pp.isFilterSpecial, pp.isFilterNPC, pp.isFilterCustom, pp.searchText);
+            FilterManager.FilterList(pp.selectedPersonality, pp.isFilterSpecial, pp.isFilterNPC, pp.isFilterCustom, pp.isFilterNTR, pp.searchText);
         }
     }
 }

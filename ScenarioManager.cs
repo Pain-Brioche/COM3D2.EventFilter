@@ -45,6 +45,7 @@ namespace COM3D2.EventFilter
             public bool IsNPC { get; private set; } = false;
             public bool IsSpecial { get; private set; } = false;
             public bool IsCustom { get; set; } = false;
+            public bool IsNTR { get; private set; } = false;
             public string TextBlob { get; private set; }
 
             public Scenario(KeyValuePair<UIWFTabButton, ScenarioData> scn)
@@ -74,6 +75,9 @@ namespace COM3D2.EventFilter
                 //Let's consider that special events don't have Maids in their list, it's more complicated than that, but it'll do for now
                 if (Maids.Count == 0 )
                     IsSpecial = true;
+
+                //NTR Checks
+                IsNTR = scn.Value.CheckPlayableCondition(ScenarioData.PlayableCondition.NTRブロック);
 
                 //CustomID list is recovered between sessions from a .json
                 IsCustom = EventFilter.Instance.CustomFilterIDS.Contains(scn.Value.ID);

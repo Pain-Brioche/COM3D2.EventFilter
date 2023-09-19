@@ -30,11 +30,6 @@ namespace COM3D2.EventFilter
             CM3D2Universe.Init(OnUIStart);
         }
 
-        //Classic Unity Update Method, run on every frame.
-        void Update()
-        {
-        }
-
         //Run once on creation
         void OnUIStart()
         {
@@ -95,6 +90,7 @@ namespace COM3D2.EventFilter
         public bool isFilterSpecial = false;
         public bool isFilterNPC = false;
         public bool isFilterCustom = true;
+        public bool isFilterNTR = false;
         public UniverseLib.UI.Models.InputFieldModel customField;
 
         protected override void OnClosePanelClicked()
@@ -113,7 +109,7 @@ namespace COM3D2.EventFilter
 
                 Create.BoolControl(ContentRoot, "FilterEvents", "Remove Special Events", refGet: () => ref isFilterSpecial);
                 Create.BoolControl(ContentRoot, "FilterExtra", "Remove NPC Events", refGet: () => ref isFilterNPC);
-
+                Create.BoolControl(ContentRoot, "FilterExtra", "Remove NTR Events", refGet: () => ref isFilterNTR);
 
                 //Custom Filter Frame content with a sub group to place the textfield and button in
                 var customFilterFrame = Create.VerticalFrame(ContentRoot, "CustomFrame");
@@ -138,7 +134,7 @@ namespace COM3D2.EventFilter
                 {
                     selectedPersonality = personalityDropdown.Value;
                     searchText = searchField.Text;
-                    FilterManager.FilterList(selectedPersonality, isFilterSpecial, isFilterNPC, isFilterCustom, searchText);
+                    FilterManager.FilterList(selectedPersonality, isFilterSpecial, isFilterNPC, isFilterCustom, isFilterNTR, searchText);
                 };
 
                 //Reset all Filters Button
