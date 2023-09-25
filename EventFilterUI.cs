@@ -75,7 +75,7 @@ namespace COM3D2.EventFilter
 
         //Various 
         public override string Name => "Event Filter";
-        public override Vector2 PreferredSize => new(400, 340);
+        public override Vector2 PreferredSize => new(400, GetHeight());
         public override Vector2 DefaultAnchorMin => new(1f, 0.5f);
         public override Vector2 DefaultAnchorMax => DefaultAnchorMin;
         public override Vector2 DefaultPosition => new(-PreferredSize.x - 50, PreferredSize.y / 2);
@@ -91,7 +91,22 @@ namespace COM3D2.EventFilter
         public bool isFilterNPC = false;
         public bool isFilterCustom = true;
         public bool isFilterNTR = false;
+        public bool isFilterPlayed = false;
         public UniverseLib.UI.Models.InputFieldModel customField;
+        public UniverseLib.UI.Models.ButtonModel addCustomButton;
+
+        private int GetHeight()
+        {
+            int h = 340;
+
+            if (EventFilter.Instance.EnableNTRFilter.Value)
+                h += 34;
+
+            if (EventFilter.Instance.EnablePlayedFilter.Value)
+                h += 34;
+
+            return h;
+        }
 
         protected override void OnClosePanelClicked()
         {
@@ -109,7 +124,14 @@ namespace COM3D2.EventFilter
 
                 Create.BoolControl(ContentRoot, "FilterEvents", "Remove Special Events", refGet: () => ref isFilterSpecial);
                 Create.BoolControl(ContentRoot, "FilterExtra", "Remove NPC Events", refGet: () => ref isFilterNPC);
-                Create.BoolControl(ContentRoot, "FilterExtra", "Remove NTR Events", refGet: () => ref isFilterNTR);
+
+                //Optional NTR Filter
+                if (EventFilter.Instance.EnableNTRFilter.Value)
+                    Create.BoolControl(ContentRoot, "FilterNTR", "Remove NTR Events", refGet: () => ref isFilterNTR);
+
+                //Optional Already Played Filter
+                if (EventFilter.Instance.EnablePlayedFilter.Value)
+                   Create.BoolControl(ContentRoot, "FilterPlayed", "Remove Played Events", refGet: () => ref isFilterPlayed);
 
                 //Custom Filter Frame content with a sub group to place the textfield and button in
                 var customFilterFrame = Create.VerticalFrame(ContentRoot, "CustomFrame");
@@ -119,13 +141,14 @@ namespace COM3D2.EventFilter
                 var customFilterAddEventGroup = Create.HorizontalGroup(customFilterFrame.ContentRoot, "CustomFilterAddEventGroup");
                 customField = Create.InputField(customFilterAddEventGroup, "CustomID", "Event ID");
 
-                var addCustomButton = Create.Button(customFilterAddEventGroup, "AddID", "Add Custom");
+                addCustomButton = Create.Button(customFilterAddEventGroup, "AddID", "Add ID");
+
+                UIFactory.SetCanvasGroup(customFilterAddEventGroup, null, isFilterCustom);
 
                 addCustomButton.OnClick += delegate ()
                 {
                     FilterManager.AddCutomFilterID(customField.Text);
                 };
-
 
                 //General Filter Button
                 var filterButton = Create.Button(ContentRoot, "Filter", "Filter");
@@ -134,7 +157,7 @@ namespace COM3D2.EventFilter
                 {
                     selectedPersonality = personalityDropdown.Value;
                     searchText = searchField.Text;
-                    FilterManager.FilterList(selectedPersonality, isFilterSpecial, isFilterNPC, isFilterCustom, isFilterNTR, searchText);
+                    FilterManager.FilterList(selectedPersonality, isFilterSpecial, isFilterNPC, isFilterCustom, isFilterNTR, isFilterPlayed, searchText);
                 };
 
                 //Reset all Filters Button

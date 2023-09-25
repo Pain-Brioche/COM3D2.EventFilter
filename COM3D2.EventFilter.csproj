@@ -14,8 +14,8 @@
     <PackageReference Include="BepInEx.Core" Version="5.*" />
     <PackageReference Include="BepInEx.PluginInfoProps" Version="1.*" />
     <PackageReference Include="COM3D2.GameLibs" Version="2.31.0-r.0" />
-    <PackageReference Include="LuVoid.CM3D2.UGUI" Version="0.1.4-alpha.1" />
-    <PackageReference Include="LuVoid.UniverseUGUI.Mono" Version="1.6.4-alpha.1" />
+    <PackageReference Include="LuVoid.CM3D2.UGUI" Version="0.1.4-alpha.2" />
+    <PackageReference Include="LuVoid.UniverseUGUI.Mono" Version="1.6.4-alpha.2" />
     <PackageReference Include="UnityEngine.Modules" Version="5.6.4" IncludeAssets="compile" />
   </ItemGroup>
   

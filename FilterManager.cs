@@ -13,7 +13,7 @@ namespace COM3D2.EventFilter
     {
         public static ScenarioManager ScenarioManager { get; set; }
 
-        public static void FilterList(int personality, bool isFilterSpecial, bool isFilterNPC, bool isFilterCustom, bool isFilterNTR, string searchString = null)
+        public static void FilterList(int personality, bool isFilterSpecial, bool isFilterNPC, bool isFilterCustom, bool isFilterNTR, bool isFilterPlayed, string searchString = null)
         {
             List<ScenarioManager.Scenario>  ScnList = ScenarioManager.Scenarios;
             int personalityID = 0;
@@ -53,6 +53,9 @@ namespace COM3D2.EventFilter
 
                if (isFilterNTR && !isHidden)
                    isHidden = scn.IsNTR;
+
+               if (isFilterPlayed && !isHidden)
+                    isHidden = scn.IsPlayed;
 
                if (!searchString.IsNullOrWhiteSpace() && !isHidden)
                    isHidden = !scn.TextBlob.Contains(searchString.ToLower());
@@ -144,19 +147,26 @@ namespace COM3D2.EventFilter
 
             Scenario Scn = ScenarioManager.Scenarios.First(s => s.ID == id);
 
-            //Add to the list for future checks and saving between sessions
+            //Add/Remove to the list for future checks and saving between sessions
             if (!Scn.IsCustom)
-                EventFilter.Instance.CustomFilterIDS.Add(id);
-
-            Scn.IsCustom = true;
-            EventFilter.Logger.LogInfo($"Added Event: {Scn.Title} (ID: {Scn.ID}) to custom Filter");
+            {
+                EventFilter.Instance.datas.CustomFilterIDS.Add(id);
+                Scn.IsCustom = true;
+                EventFilter.Logger.LogInfo($"Added Event: {Scn.Title} (ID: {Scn.ID}) to custom Filters");
+            }
+            else
+            {
+                EventFilter.Instance.datas.CustomFilterIDS.Remove(id);
+                Scn.IsCustom = false;
+                EventFilter.Logger.LogInfo($"Removed Event: {Scn.Title} (ID: {Scn.ID}) from custom Filters");
+            }
 
             //Immediatly hide the event
             Scn.ButtonObject.SetActive(false);
 
             ScenarioManager.sceneScenarioSelect.m_ScenarioScroll.Grid.Reposition();
 
-            EventFilter.SaveJson();
+            EventFilter.Instance.datas.SaveJson();
         }
     }
 }
