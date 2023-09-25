@@ -86,25 +86,28 @@ namespace COM3D2.EventFilter
                             break;
                     }
                }
-               
+
 
                 #region logging
-                //logging things, to be deleted
+                /*
+                  //logging things, to be deleted
 
-                string ml = $"{scn.Title.Replace("\n", "")} - {scn.Maids.Count} Maids: ";
+                  string ml = $"{scn.Title.Replace("\n", "")} - {scn.Maids.Count} Maids: ";
 
-                foreach (Maid maid in scn.Maids)
-                {
-                    int id = maid.status.personal.id;
-                    string pers = MaidStatus.Personal.IdToUniqueName(id);
-                    string tempStr = $"{id}=>{pers}  ";
-                    ml = $"{ml}{tempStr}";
-                }
-                if (isHidden)
-                    EventFilter.Logger.LogInfo($"OUT\t\t{ml}");
-                else
-                    EventFilter.Logger.LogInfo(ml);
+                  foreach (Maid maid in scn.Maids)
+                  {
+                      int id = maid.status.personal.id;
+                      string pers = MaidStatus.Personal.IdToUniqueName(id);
+                      string tempStr = $"{id}=>{pers}  ";
+                      ml = $"{ml}{tempStr}";
+                  }
+                  if (isHidden)
+                      EventFilter.Logger.LogInfo($"OUT\t\t{ml}");
+                  else
+                      EventFilter.Logger.LogInfo(ml);
+                 */
                 #endregion
+
 
                 //Filtering out elements from the list
                 scn.ButtonObject.SetActive(!isHidden);

@@ -47,8 +47,6 @@ namespace COM3D2.EventFilter
             // BepinEx config
             EnableNTRFilter = Config.Bind("Filters", "Enable NTR Filter", false, "Add an option to filter NTR events");
             EnablePlayedFilter = Config.Bind("Filters", "Enable Already Played Filter", false, "Add an option to filter already played Events");
-
-            Instance.datas.LoadJson();
         }
 
         private void OnDestroy()

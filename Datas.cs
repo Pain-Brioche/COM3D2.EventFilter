@@ -11,16 +11,23 @@ namespace COM3D2.EventFilter
     internal class Datas
     {
         private readonly static string jsonPath = BepInEx.Paths.ConfigPath + "\\COM3D2.EventFilter.json";
-        public List<int> CustomFilterIDS { get; set; } = new();
-        public HashSet<int> AlreadyPlayedIDs { get; set; } = new();
+        public List<int> CustomFilterIDS { get; set; }
+        public HashSet<int> AlreadyPlayedIDs { get; set; }
 
-        public void LoadJson()
-        {
-            if (File.Exists(jsonPath))
+        public Datas()
+        { 
+            if (!File.Exists(jsonPath))
             {
-                string json = File.ReadAllText(jsonPath);
-                EventFilter.Instance.datas = JsonConvert.DeserializeObject<Datas>(json);
+                CustomFilterIDS = new List<int>();
+                AlreadyPlayedIDs = new HashSet<int>();
+                return;
             }
+
+            string json = File.ReadAllText(jsonPath);
+            Datas loadedData = JsonConvert.DeserializeObject<Datas>(json);
+
+            CustomFilterIDS = loadedData.CustomFilterIDS;
+            AlreadyPlayedIDs = loadedData.AlreadyPlayedIDs;
         }
 
         public void SaveJson()
@@ -28,24 +35,4 @@ namespace COM3D2.EventFilter
             File.WriteAllText(jsonPath, JsonConvert.SerializeObject(EventFilter.Instance.datas));
         }
     }
-    /*
-    internal static class JsonHelper
-    {
-        private readonly static string jsonPath = BepInEx.Paths.ConfigPath + "\\COM3D2.EventFilter.json";
-
-        public static void LoadJson()
-        {
-            if (File.Exists(jsonPath))
-            {
-                string json = File.ReadAllText(jsonPath);
-                EventFilter.Instance.datas = JsonConvert.DeserializeObject<Datas>(json);
-            }
-        }
-
-        public static void SaveJson()
-        {
-            File.WriteAllText(jsonPath, JsonConvert.SerializeObject(EventFilter.Instance.datas));
-        }
-    }
-    */
 }

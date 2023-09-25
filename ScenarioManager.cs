@@ -45,9 +45,9 @@ namespace COM3D2.EventFilter
             public GameObject ButtonObject { get; private set; }
             public bool IsNPC { get; private set; } = false;
             public bool IsSpecial { get; private set; } = false;
-            public bool IsCustom { get; set; } = false;
+            public bool IsCustom { get; set; }
             public bool IsNTR { get; private set; } = false;
-            public bool IsPlayed { get; set; } = false;
+            public bool IsPlayed { get; set; }
             public string TextBlob { get; private set; }
 
             public Scenario(KeyValuePair<UIWFTabButton, ScenarioData> scn)
@@ -82,10 +82,10 @@ namespace COM3D2.EventFilter
                 IsNTR = scn.Value.CheckPlayableCondition(ScenarioData.PlayableCondition.NTRブロック);
 
                 //CustomID list is recovered between sessions from a .json
-                IsCustom = EventFilter.Instance.datas.CustomFilterIDS.Contains(scn.Value.ID);
+                IsCustom = EventFilter.Instance.datas?.CustomFilterIDS.Contains(scn.Value.ID) ?? false;
 
                 //Same thing for Played events
-                IsPlayed = EventFilter.Instance.datas.AlreadyPlayedIDs.Contains(scn.Value.ID);
+                IsPlayed = EventFilter.Instance.datas?.AlreadyPlayedIDs.Contains(scn.Value.ID) ?? false;
 
                 //building text blob, a concatenation of all relevant text to search into
                 TextBlob = $"{Title} {ScenarioScript}";
