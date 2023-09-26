@@ -30,7 +30,7 @@ namespace COM3D2.EventFilter
             {
                 EventFilter.Logger.LogInfo($"Searching for {searchString}");
             }
-            EventFilter.Logger.LogInfo($"Filter special Events: {isFilterSpecial}, Filter NPC Events: {isFilterNPC}");
+            EventFilter.Logger.LogInfo($"Special: {isFilterSpecial}, NPC: {isFilterNPC}, NTR: {isFilterNTR}, Played: {isFilterPlayed}");
             EventFilter.Logger.LogInfo($"-----------------------------------------------------------------------------------");
 
 
@@ -87,7 +87,6 @@ namespace COM3D2.EventFilter
                     }
                }
 
-
                 #region logging
                 /*
                   //logging things, to be deleted
@@ -107,7 +106,6 @@ namespace COM3D2.EventFilter
                       EventFilter.Logger.LogInfo(ml);
                  */
                 #endregion
-
 
                 //Filtering out elements from the list
                 scn.ButtonObject.SetActive(!isHidden);
@@ -153,13 +151,13 @@ namespace COM3D2.EventFilter
             //Add/Remove to the list for future checks and saving between sessions
             if (!Scn.IsCustom)
             {
-                EventFilter.Instance.datas.CustomFilterIDS.Add(id);
+                Datas.CustomFilterIDS.Add(id);
                 Scn.IsCustom = true;
                 EventFilter.Logger.LogInfo($"Added Event: {Scn.Title} (ID: {Scn.ID}) to custom Filters");
             }
             else
             {
-                EventFilter.Instance.datas.CustomFilterIDS.Remove(id);
+                Datas.CustomFilterIDS.Remove(id);
                 Scn.IsCustom = false;
                 EventFilter.Logger.LogInfo($"Removed Event: {Scn.Title} (ID: {Scn.ID}) from custom Filters");
             }
@@ -169,7 +167,7 @@ namespace COM3D2.EventFilter
 
             ScenarioManager.sceneScenarioSelect.m_ScenarioScroll.Grid.Reposition();
 
-            EventFilter.Instance.datas.SaveJson();
+            Datas.SaveJson();
         }
     }
 }

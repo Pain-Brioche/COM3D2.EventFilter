@@ -62,9 +62,10 @@ namespace COM3D2.EventFilter
             ScenarioManager.Scenario scenario = scnM.Scenarios.First(s => s.ID == scnM.sceneScenarioSelect.m_CurrentScenario.ID);
             scenario.IsPlayed = true;
 
-            EventFilter.Instance.datas.AlreadyPlayedIDs.Add(scenario.ID);
+            //Add this event to the alreadyplayed list.
+            Datas.AlreadyPlayedIDs.Add(scenario.ID);
             EventFilter.Logger.LogInfo($"Event {scenario.ID} is now considered as played.");
-            EventFilter.Instance.datas.SaveJson();
+            Datas.SaveJson();
         }
         /*
         [HarmonyPostfix]

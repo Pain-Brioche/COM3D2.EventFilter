@@ -15,7 +15,7 @@ namespace COM3D2.EventFilter
 
         public ScenarioManager()
         {
-            EventFilter.Logger.LogWarning("ScenarioManager Init");
+            //EventFilter.Logger.LogWarning("ScenarioManager Init");
             sceneScenarioSelect ??= UnityEngine.Object.FindObjectOfType<SceneScenarioSelect>();
 
             foreach (KeyValuePair<UIWFTabButton, ScenarioData> scn in sceneScenarioSelect.m_ScenarioButtonpair)
@@ -38,7 +38,6 @@ namespace COM3D2.EventFilter
         {
             public int ID { get; private set; }
             public string Title { get; private set; }
-            public string ScenarioScript { get; private set; }
             public List<Maid> Maids { get; private set; }
             public int[] MaidIDs { get; private set; }
             public UIWFTabButton UIWFTabButton { get; private set; }
@@ -54,7 +53,6 @@ namespace COM3D2.EventFilter
             {
                 ID = scn.Value.ID;
                 Title = scn.Value.Title;
-                ScenarioScript = scn.Value.ScenarioScript;
                 Maids = scn.Value.m_EventMaid;
                 UIWFTabButton = scn.Key;
                 ButtonObject = UIWFTabButton.transform.parent.gameObject;
@@ -82,19 +80,24 @@ namespace COM3D2.EventFilter
                 IsNTR = scn.Value.CheckPlayableCondition(ScenarioData.PlayableCondition.NTRブロック);
 
                 //CustomID list is recovered between sessions from a .json
-                IsCustom = EventFilter.Instance.datas?.CustomFilterIDS.Contains(scn.Value.ID) ?? false;
+                IsCustom = Datas.CustomFilterIDS.Contains(scn.Value.ID);
 
                 //Same thing for Played events
-                IsPlayed = EventFilter.Instance.datas?.AlreadyPlayedIDs.Contains(scn.Value.ID) ?? false;
+                IsPlayed = Datas.AlreadyPlayedIDs.Contains(scn.Value.ID);
 
                 //building text blob, a concatenation of all relevant text to search into
-                TextBlob = $"{Title} {ScenarioScript}";
+                TextBlob = $"{Title} \n{scn.Value.ScenarioScript} \n{scn.Value.EventContents}";
+                foreach (string txt in scn.Value.ConditionText)
+                    TextBlob = $"{TextBlob} \n{txt}";
+
                 foreach (var maid in Maids.Select(m => m.status))
                 {
                     string str = $"{maid.firstName} {maid.lastName} {maid.nickName}";
                     TextBlob = $"{TextBlob} {str}";
                 }
                 TextBlob = TextBlob.ToLower() ;
+
+                //EventFilter.Logger.LogMessage(TextBlob);
             }
         }
     }

@@ -27,7 +27,7 @@ namespace COM3D2.EventFilter
         private ManualLogSource logger => base.Logger;
 
         //Data
-        internal Datas datas = new();
+        //internal Datas datas = new();
 
         //config
         internal ConfigEntry<bool> EnableNTRFilter;
@@ -42,11 +42,16 @@ namespace COM3D2.EventFilter
             // Harmony
             Harmony.CreateAndPatchAll(typeof(Patches));
 
-            SceneManager.sceneLoaded += OnSceneLoaded;
+            //Loading Previous Data
+            //Instance.datas.LoadJson();
 
             // BepinEx config
             EnableNTRFilter = Config.Bind("Filters", "Enable NTR Filter", false, "Add an option to filter NTR events");
             EnablePlayedFilter = Config.Bind("Filters", "Enable Already Played Filter", false, "Add an option to filter already played Events");
+
+
+            SceneManager.sceneLoaded += OnSceneLoaded;
+            Config.SettingChanged += OnSettingChanged;
         }
 
         private void OnDestroy()
@@ -54,16 +59,22 @@ namespace COM3D2.EventFilter
             SceneManager.sceneLoaded -= OnSceneLoaded;
         }
 
-        private static void OnSceneLoaded(Scene scene, LoadSceneMode sceneMode)
+        private void OnSceneLoaded(Scene scene, LoadSceneMode sceneMode)
         {
             if (scene.name == "SceneScenarioSelect")
             {
                 FilterManager.ScenarioManager = null;
                 Instance.EnableUI();
+                Instance.EventFilterPluginPanel.UpdateOptionalFiltersVisibility();
             }
 
             else
                 Instance.DisableUI();
+        }
+
+        private void OnSettingChanged(object sender, SettingChangedEventArgs args)
+        {
+            Instance.EventFilterPluginPanel.UpdateOptionalFiltersVisibility();
         }
     }
 }

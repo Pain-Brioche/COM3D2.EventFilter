@@ -11,7 +11,8 @@ using UniverseLib.UI.Styles;
 using CM3D2.UGUI;
 using CM3D2.UGUI.Resources;
 using CM3D2.UGUI.Panels;
-
+using UniverseLib.UI.Controls;
+using UniverseLib.UI.Models;
 
 namespace COM3D2.EventFilter
 {
@@ -92,8 +93,10 @@ namespace COM3D2.EventFilter
         public bool isFilterCustom = true;
         public bool isFilterNTR = false;
         public bool isFilterPlayed = false;
-        public UniverseLib.UI.Models.InputFieldModel customField;
-        public UniverseLib.UI.Models.ButtonModel addCustomButton;
+        public InputFieldModel customField;
+        public ButtonModel addCustomButton;
+        public BoolControl NTRFilterBoolControl;
+        public BoolControl PlayedFilterBoolControl;
 
         private int GetHeight()
         {
@@ -113,6 +116,12 @@ namespace COM3D2.EventFilter
             EventFilter.Instance.DisableUI();
         }
 
+        public void UpdateOptionalFiltersVisibility()
+        {
+            NTRFilterBoolControl.Enabled = EventFilter.Instance.EnableNTRFilter.Value;
+            PlayedFilterBoolControl.Enabled = EventFilter.Instance.EnablePlayedFilter.Value;
+        }
+
         protected override void ConstructPanelContent()
         {
             //Make each element occupy the full witdth of the panel
@@ -126,12 +135,10 @@ namespace COM3D2.EventFilter
                 Create.BoolControl(ContentRoot, "FilterExtra", "Remove NPC Events", refGet: () => ref isFilterNPC);
 
                 //Optional NTR Filter
-                if (EventFilter.Instance.EnableNTRFilter.Value)
-                    Create.BoolControl(ContentRoot, "FilterNTR", "Remove NTR Events", refGet: () => ref isFilterNTR);
+                NTRFilterBoolControl = Create.BoolControl(ContentRoot, "FilterNTR", "Remove NTR Events", refGet: () => ref isFilterNTR);
 
                 //Optional Already Played Filter
-                if (EventFilter.Instance.EnablePlayedFilter.Value)
-                   Create.BoolControl(ContentRoot, "FilterPlayed", "Remove Played Events", refGet: () => ref isFilterPlayed);
+                PlayedFilterBoolControl = Create.BoolControl(ContentRoot, "FilterPlayed", "Remove Played Events", refGet: () => ref isFilterPlayed);
 
                 //Custom Filter Frame content with a sub group to place the textfield and button in
                 var customFilterFrame = Create.VerticalFrame(ContentRoot, "CustomFrame");
