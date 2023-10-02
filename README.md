@@ -17,5 +17,5 @@ Adds a graphical Interface to filter the event list according to various paramet
 - Custom Filter. Select an event and press the "Add ID" button, this event will always be hidden by default in the list. You can remove it from the list at any time by selecting it again and press the "Remove ID" button.
 
 ## Thanks:
-- This plugin uses Luvoid's COM3D2.UGUI library as well as the modified Universelib.
-- Doc's for general code improvement.
+- This plugin uses Luvoid's [COM3D2.UGUI library](https://github.com/luvoid/CM3D2.UGUI) as well as the [modified Universelib](https://github.com/luvoid/UniverseUGUI).
+- Luvoid and Doc for general code improvement.
