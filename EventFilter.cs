@@ -2,16 +2,7 @@
 using BepInEx.Logging;
 using BepInEx.Configuration;
 using HarmonyLib;
-using System.Collections.Generic;
-using UnityEngine;
 using UnityEngine.SceneManagement;
-using System.IO;
-using System.Linq;
-using UniverseLib;
-using CM3D2.UGUI;
-using Newtonsoft.Json;
-using I2.Loc.SimpleJSON;
-using System;
 
 namespace COM3D2.EventFilter
 {

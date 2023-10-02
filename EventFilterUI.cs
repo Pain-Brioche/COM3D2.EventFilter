@@ -76,16 +76,17 @@ namespace COM3D2.EventFilter
 
         //Various 
         public override string Name => "Event Filter";
-        public override Vector2 PreferredSize => new(400, GetHeight());
+        public override Vector2 PreferredSize => _preferedSize;
         public override Vector2 DefaultAnchorMin => new(1f, 0.5f);
         public override Vector2 DefaultAnchorMax => DefaultAnchorMin;
-        public override Vector2 DefaultPosition => new(-PreferredSize.x - 50, PreferredSize.y / 2);
+        public override Vector2 DefaultPosition => new(-Screen.width / 3, -Screen.height / 6);
         public override bool CanDragAndResize => true;
 
         public override IReadOnlyUISkin Skin => Styles.StandardSkin;
 
 
         //values
+        public Vector2 _preferedSize = new(400, 340);
         public int selectedPersonality = 0;
         public string searchText = string.Empty;
         public bool isFilterSpecial = false;
@@ -120,6 +121,10 @@ namespace COM3D2.EventFilter
         {
             NTRFilterBoolControl.Enabled = EventFilter.Instance.EnableNTRFilter.Value;
             PlayedFilterBoolControl.Enabled = EventFilter.Instance.EnablePlayedFilter.Value;
+
+            _preferedSize = new Vector2(400, GetHeight());
+            EventFilter.Instance.EventFilterPluginPanel.SetDefaultSizeAndPosition();
+
         }
 
         protected override void ConstructPanelContent()
@@ -127,6 +132,8 @@ namespace COM3D2.EventFilter
             //Make each element occupy the full witdth of the panel
             using (Create.LayoutContext(flexibleWidth: 1))
             {
+                EventFilter.Logger.LogWarning($"x:{DefaultPosition.x} y:{DefaultPosition.y}");
+
                 //Default layout is a vertical stack, each new element will be placed bellow.
                 var personalityDropdown = Create.Dropdown(ContentRoot, "Personality", null, selectedPersonality, Personalities.GetPersonalityArray());
                 var searchField = Create.InputField(ContentRoot, "Search", "Search...");
@@ -145,7 +152,7 @@ namespace COM3D2.EventFilter
 
                 Create.BoolControl(customFilterFrame.ContentRoot, "FilterCustom", "Custom Filter", refGet: () => ref isFilterCustom);
 
-                var customFilterAddEventGroup = Create.HorizontalGroup(customFilterFrame.ContentRoot, "CustomFilterAddEventGroup");
+                var customFilterAddEventGroup = Create.HorizontalGroup(customFilterFrame.ContentRoot, "CustomFilterAddEventGroup", childAlignment: TextAnchor.MiddleLeft);
                 customField = Create.InputField(customFilterAddEventGroup, "CustomID", "Event ID");
 
                 addCustomButton = Create.Button(customFilterAddEventGroup, "AddID", "Add ID");

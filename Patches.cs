@@ -60,7 +60,7 @@ namespace COM3D2.EventFilter
 
 
             ScenarioManager.Scenario scenario = scnM.Scenarios.First(s => s.ID == scnM.sceneScenarioSelect.m_CurrentScenario.ID);
-            scenario.IsPlayed = true;
+            //scenario.IsPlayed = true;
 
             //Add this event to the alreadyplayed list.
             Datas.AlreadyPlayedIDs.Add(scenario.ID);

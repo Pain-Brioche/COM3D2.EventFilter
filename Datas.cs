@@ -1,11 +1,8 @@
-﻿using I2.Loc.SimpleJSON;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 
 namespace COM3D2.EventFilter
 {
