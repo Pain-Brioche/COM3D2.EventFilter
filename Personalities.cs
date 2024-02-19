@@ -31,6 +31,7 @@ namespace COM3D2.EventFilter
             200,Crafty
             210,Friendly
             220,Dame
+            230,Gal
         */
 
         internal static SortedDictionary<int, string> PersonalityDic => new()
@@ -58,6 +59,7 @@ namespace COM3D2.EventFilter
             {200 , "Haraguro"},
             {210 , "Kisakude"},
             {220 , "Kimajime"},
+            {230,  "Gyaru"},
             {999 , "NPC & Special Only"},
             {1000, "Custom Filter Only" }
         };

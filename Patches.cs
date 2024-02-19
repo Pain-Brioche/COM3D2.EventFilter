@@ -25,7 +25,7 @@ namespace COM3D2.EventFilter
 
             EventFilter.Instance.EventFilterPluginPanel.customField.Text = scenario.ID.ToString();
 
-            EventFilter.Instance.EventFilterPluginPanel.addCustomButton.Label.text = scnM.Scenarios.Contains(scenario) ? "Remove ID" : "Add ID";
+            EventFilter.Instance.EventFilterPluginPanel.addCustomButton.Label.text = Datas.CustomFilterIDS.Contains(scenario.ID) ? "Remove ID" : "Add ID";
         }
 
         [HarmonyPostfix]
